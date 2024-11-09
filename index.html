@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stundenplan</title>
+    <link rel="stylesheet" href="Hops_wpf.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="https://www.th-koeln.de/">
+            <img src="TH_Logo.png" alt="Logo" class="header-logo">
+            </a>
+            <div class="header-title">
+                <h1>
+                    <span class="hops-text">
+                        <span class="color1">H</span>
+                        <span class="color2">o</span>
+                        <span class="color3">P</span>
+                        <span class="color4">S</span>
+                    </span>
+                    <span class="wpf-text">WPF</span>
+                </h1>
+            </div>
+            <div class="header-buttons">
+                <button id="registerButton">Registrieren</button>
+                <button id="loginButton">Log In</button>
+                <button id="downloadButton">Download Stundenplan</button>
+            </div>
+        </div>
+    </header>
+
+    <h2>Stundenplan</h2>
+
+    <!-- Stundenplan Tabelle -->
+    <table id="stundenplan">
+        <thead>
+            <tr>
+                <th class="time">Zeit</th>
+                <th>Montag</th>
+                <th>Dienstag</th>
+                <th>Mittwoch</th>
+                <th>Donnerstag</th>
+                <th>Freitag</th>
+            </tr>
+        </thead>
+        <tbody id="stundenplan-body">
+            <!-- Die Zellen werden hier durch JavaScript hinzugefügt -->
+        </tbody>
+    </table>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('loginModal').style.display='none'">&times;</span>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="uname"><b>Benutzername</b></label>
+                    <input type="text" id="uname" name="uname" placeholder="Benutzername eingeben" required>
+                </div>
+                <div class="form-group">
+                    <label for="psw"><b>Passwort</b></label>
+                    <input type="password" id="psw" name="psw" placeholder="Passwort eingeben" required>
+                </div>
+                <button type="submit">Log In</button>
+            </form>
+        </div>
+    </div>
+    
+    
+
+    <!-- Registrierungs-Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('registerModal').style.display='none'">&times;</span>
+            <form id="registerForm" class="register-form">
+                <div class="form-group">
+                    <label for="regUname"><b>Benutzername</b></label>
+                    <input type="text" id="regUname" name="regUname" placeholder="Benutzername eingeben" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPsw"><b>Passwort</b></label>
+                    <input type="password" id="regPsw" name="regPsw" placeholder="Passwort eingeben" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail"><b>E-Mail</b></label>
+                    <input type="email" id="regEmail" name="regEmail" placeholder="E-Mail eingeben" required>
+                </div>
+                
+    <div class="form-group">
+        <label><b>Rolle</b></label>
+        <div class="inline-radio">
+            <input type="radio" id="student" name="role" value="Student" required>
+            <label for="student">Student</label>
+        </div>
+        <div class="inline-radio">
+            <input type="radio" id="professor" name="role" value="Professor" required>
+            <label for="professor">Professor</label>
+        </div>
+    </div>
+                <button type="submit">Registrieren</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <span class="year">© 2024</span>
+            <a href="https://www.th-koeln.de" class="university">Technische Hochschule Köln</a>
+        </div>
+    </footer>
+
+    <!-- Script für Modals und PDF-Download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="HoPS_WPF_script.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+body {
+    font-family: Arial, serif, sans-serif;
+    background-color: #e8e8e8;
+    margin: 0;
+}
+
+h1 {
+    margin: 0; /* Verringert Höhe des Headers */
+}
+
+h2 {
+    text-align: center; /* Zentriert Überschrift 'Stundenplan' auf der Seite */
+    color: #000000;
+}
+
+header {
+    display: flex;
+    background-color: white;
+    padding: 10px 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.header-logo {
+    width: 120px;
+    height: auto;
+}
+
+.hops-text {
+    margin-right: 10px;
+    letter-spacing: -3.5px;
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-left: -410px;
+}
+.hops-text .color1 {
+    color: #c81e0f; /* Rot */
+}
+
+.hops-text .color2 {
+    color: #000000; /* Schwarz */
+}
+
+.hops-text .color3 {
+    color: #ea5a00; /* Orange */
+}
+
+.hops-text .color4 {
+    color: #b43092; /* Lila */
+}
+
+
+.wpf-text {
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    background-color: #c81e0f;
+    color: whitesmoke;
+    border: solid transparent;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#loginButton {
+    width: 120px; /* Ändere die Breite nach Bedarf */
+}
+
+button:hover {
+    background-color: #cccccc;
+}
+
+table {
+    width: 80%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    font-size: 18px;
+}
+
+th, td.time {
+    background-color: #c6c0c0; /* Gleiche Farbe für die Zeitspalte und die Wochentagsüberschriften */
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Alternierende Zeilenfarben */
+tr:nth-child(even) td {
+    background-color: #ccd4d8;
+}
+
+tr:nth-child(odd) td {
+    background-color: #ffffff;
+}
+
+/* Hover-Effekt für alle Zellen */
+td:hover, th:hover {
+    background-color: #cbcbcb;
+}
+
+.highlight {
+    background-color: #242424;
+}
+
+.modal, .info-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content, .info-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 400px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+/* Formular-Stile für das Registrierungsformular */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.register-form label, .login-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.register-form input[type="text"],
+.register-form input[type="password"],
+.register-form input[type="email"],
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.register-form button, .login-form button {
+    background-color: #c81e0f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    font-size: 16px;
+    opacity: 1;
+}
+
+
+
+.register-form button:hover, .login-form button:hover {
+    background-color: #b11a0d;
+    opacity: 0.8;
+}
+
+footer {
+    background-color: #333;
+    padding: 10px;
+    font-size: 14px;
+    max-width: 450px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.footer-content {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.footer-content .year {
+    color: #ffffff;
+}
+
+.footer-content .university {
+    color: #ffcccb;
+    text-decoration: none;
+}
+
+.footer-content .university:hover {
+    text-decoration: underline;
+}
+
+
+.subject-entry {
+    margin-bottom: 5px; /* Abstand zwischen einzelnen Fächern */
+}
+
+/* Stil für die Rolle-Auswahl */
+.inline-radio {
+    display: flex;
+    align-items: center; /* Bringt Radio-Buttons und Labels auf die gleiche Höhe */
+    gap: 10px; /* Abstand zwischen Radio-Button und Label */
+    margin-bottom: 10px; /* Abstand zwischen den Rolleneinträgen */
+}
+
+.inline-radio label {
+    margin: 0; /* Entfernt zusätzlichen Abstand */
+}
