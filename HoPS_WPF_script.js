@@ -269,5 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
         pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
         pdf.save('stundenplan.pdf');
     });
+
+
     
 });
