@@ -55,7 +55,83 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('registerModal').style.display = 'block';
     });
 
-    // Logout und Login
+    // URL der Web-App, die mit Google Sheets verbunden ist
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxWrpQD67nYhBYoa22Zj0YRlszmYIBB2tyJMnYY4QuzBnKrWh8S5ff8cqaTvvVgqMsp/exec';
+
+    // Login-Funktion, angepasst für Google Sheets
+    function login(event) {
+        event.preventDefault();
+        
+        const username = document.getElementById("uname").value;
+        const password = document.getElementById("psw").value;
+        
+        fetch(WEB_APP_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ action: "login", username, password }) // Beispiel: action-Parameter zur Identifizierung der Operation
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                currentUser = data.user;
+                document.getElementById('loginButton').innerText = 'Log Out';
+                document.getElementById('userRole').innerText = `Rolle: ${currentUser.role}`;
+                document.getElementById('loginModal').style.display = 'none';
+                alert(`Erfolgreich eingeloggt! Willkommen, ${username}.`);
+            } else {
+                alert("Ungültige Anmeldedaten.");
+            }
+        })
+        .catch(error => console.error("Fehler beim Login:", error));
+    }
+
+    // Registrierung, angepasst für Google Sheets
+    function register(event) {
+        event.preventDefault();
+        const username = document.getElementById("regUname").value;
+        const password = document.getElementById("regPsw").value;
+        const email = document.getElementById("regEmail").value;
+        const role = document.querySelector('input[name="role"]:checked').value;
+
+        saveData(username, email, role); // Verwendet saveData zur Registrierung und Speicherung in Google Sheets
+    }
+
+    // Funktion zum Speichern von Daten in Google Sheets
+    async function saveData(name, email, role) {
+      try {
+        const response = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: JSON.stringify({ name, email, role }), // Beispiel-Daten zum Speichern
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const result = await response.text(); // Antworttext anzeigen
+        console.log(result); // Bestätigung der erfolgreichen Speicherung
+        alert("Benutzer erfolgreich registriert und in Google Sheets gespeichert.");
+        document.getElementById('registerModal').style.display = 'none';
+        fetchData(); // Optional: Aktualisiere die Daten nach dem Speichern
+      } catch (error) {
+        console.error('Fehler beim Speichern der Daten:', error);
+      }
+    }
+
+    // Funktion zum Abrufen der Daten aus Google Sheets
+    async function fetchData() {
+      try {
+        const response = await fetch(WEB_APP_URL); // Abruf der Daten
+        const data = await response.json(); // Konvertiere die Antwort in JSON
+        console.log(data); // Zeigt die abgerufenen Daten in der Konsole an
+      } catch (error) {
+        console.error('Fehler beim Abrufen der Daten:', error);
+      }
+    }
+
+    // Initialisiere Daten beim Laden der Seite
+    fetchData();
+
+    // Weitere Funktionen wie createWPF, registerOrUnregisterForWPF, updateCellDisplay und deleteSubject bleiben unverändert
+
     function handleLoginLogout() {
         const button = document.getElementById('loginButton');
         if (button.innerText === 'Log In') {
@@ -67,64 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('userRole').innerText = '';
         }
     }
-
-    function login(event) {
-        event.preventDefault();
-        
-        const username = document.getElementById("uname").value;
-        const password = document.getElementById("psw").value;
-        
-        fetch("http://localhost:3000/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ username, password })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                currentUser = data.user;
-                document.getElementById('loginButton').innerText = 'Log Out';
-                document.getElementById('userRole').innerText = `Rolle: ${currentUser.role}`;
-                
-                // Schließe das Login-Modal bei erfolgreichem Login
-                document.getElementById('loginModal').style.display = 'none';
-                
-                // Zeige die Erfolgsmeldung im Browser als Pop-up
-                alert(`Erfolgreich eingeloggt! Willkommen, ${username}.`);
-                
-            } else {
-                alert("Ungültige Anmeldedaten.");
-            }
-        })
-        .catch(error => console.error("Fehler beim Login:", error));
-    }    
-
-    // Registrierung
-    function register(event) {
-        event.preventDefault();
-        const username = document.getElementById("regUname").value;
-        const password = document.getElementById("regPsw").value;
-        const email = document.getElementById("regEmail").value;
-        const role = document.querySelector('input[name="role"]:checked').value;
-
-        fetch("http://localhost:3000/add-data", { // Backend-Route zum Speichern der Daten
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ username, password, email, role })
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert("Benutzer erfolgreich registriert und in Google Sheets gespeichert.");
-            document.getElementById('registerModal').style.display = 'none';
-        })
-        .catch(error => console.error("Fehler beim Speichern der Daten:", error));
-    }
-
-    // Funktionen zum Bearbeiten der Zellen
+    
     function handleCellClick(cell) {
         if (currentUser && currentUser.role === 'Professor') {
             createWPF(cell);
@@ -134,9 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Bitte loggen Sie sich als Professor oder Student ein.");
         }
     }
-
-    // Restliche Funktionen (z.B. createWPF, registerOrUnregisterForWPF) bleiben unverändert
-
 
     function createWPF(cell) {
         const moduleName = prompt('Geben Sie das Modul ein:').trim();
@@ -151,20 +167,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const maxParticipants = parseInt(prompt('Geben Sie die maximale Teilnehmeranzahl ein:'), 10);
         if (isNaN(maxParticipants) || maxParticipants <= 0) return;
     
-        fetch("http://localhost:3000/add-wpf", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ moduleName, room, professor, maxParticipants })
-        })
-        .then(response => response.text())
-        .then(data => {
-            alert("WPF erfolgreich gespeichert");
-        })
-        .catch(error => console.error("Fehler beim Speichern des WPFs:", error));
-    
-        // Neues WPF-Objekt erstellen
         const wpf = {
             moduleName,
             room,
@@ -174,10 +176,8 @@ document.addEventListener("DOMContentLoaded", function () {
             students: []
         };
         wpfList.push(wpf);
-
-        // WPF zur Zellliste hinzufügen und anzeigen
         cell.wpfEntries.push(wpf);
-        updateCellDisplay(cell); // Aktualisiert die Zelle mit allen WPFs in der Zelle
+        updateCellDisplay(cell);
     }
 
     function registerOrUnregisterForWPF(cell) {
@@ -194,16 +194,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (wpf.students.includes(currentUser.username)) {
-            // Der Benutzer ist bereits angemeldet, Abmeldung ermöglichen
             const confirm = prompt(`Möchten Sie sich von ${moduleName} abmelden? Geben Sie "Ja" ein, um zu bestätigen.`);
             if (confirm && confirm.toLowerCase() === "ja") {
                 wpf.students = wpf.students.filter(student => student !== currentUser.username);
                 wpf.currentParticipants--;
                 alert(`Sie haben sich erfolgreich von ${moduleName} abgemeldet.`);
-                updateCellDisplay(cell); // Aktualisiert die Anzeige in der Zelle
+                updateCellDisplay(cell);
             }
         } else {
-            // Der Benutzer ist nicht angemeldet, Anmeldung ermöglichen
             if (wpf.currentParticipants >= wpf.maxParticipants) {
                 alert("Keine freien Plätze mehr.");
                 return;
@@ -214,11 +212,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 wpf.students.push(currentUser.username);
                 wpf.currentParticipants++;
                 alert(`Sie haben sich erfolgreich für ${moduleName} angemeldet.`);
-                updateCellDisplay(cell); // Aktualisiert die Anzeige in der Zelle
+                updateCellDisplay(cell);
             }
         }
     }
-
 
     function updateCellDisplay(cell) {
         cell.innerHTML = '';
@@ -238,8 +235,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const moduleName = prompt("Geben Sie den Namen des Fachs ein, das Sie löschen möchten:");
             const index = cell.wpfEntries.findIndex(w => w.moduleName === moduleName);
             if (index !== -1) {
-                cell.wpfEntries.splice(index, 1); // Entfernt das WPF aus der Zellliste
-                updateCellDisplay(cell); // Aktualisiert die Anzeige
+                cell.wpfEntries.splice(index, 1);
+                updateCellDisplay(cell);
             } else {
                 alert("Fach nicht gefunden.");
             }
@@ -263,13 +260,10 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
     
-        // Nimmt ein Screenshot des Stundenplans mit html2canvas
         const canvas = await html2canvas(stundenplan);
         const imgData = canvas.toDataURL('image/png');
         pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
         pdf.save('stundenplan.pdf');
     });
 
-
-    
 });
